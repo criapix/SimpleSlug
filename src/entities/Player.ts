@@ -14,7 +14,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Configurar física do jogador
         this.setCollideWorldBounds(true);
-        this.setBounce(0.1);
+        this.setBounce(0.15);
         this.setGravityY(1000);
 
         // Configurar controles

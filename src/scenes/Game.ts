@@ -82,7 +82,8 @@ export class Game extends Scene
         
         // Ajusta a câmera para seguir o jogador
         this.camera.setBounds(0, 0, this.map.widthInPixels * scale, this.map.heightInPixels * scale);
-        this.camera.startFollow(this.player);
+        this.camera.startFollow(this.player, true, 0.5, 0.5); // Seguimento suave em ambos os eixos
+        this.camera.setLerp(0.1, 0.1); // Suaviza o movimento da câmera em ambos os eixos
         
         // Adiciona texto de instrução
         this.msg_text = this.add.text(this.cameras.main.width * 0.5, this.cameras.main.height * 0.15, 'Use as setas para mover e pular\nEspaço para atirar', {
