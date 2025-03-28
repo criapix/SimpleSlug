@@ -43,7 +43,7 @@ jobs:
       - name: Upload de arquivos para o Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'  # Enviar tudo (raiz + dist)
+          path: './dist'  # Enviar apenas a pasta dist com os arquivos compilados
 
       - name: Deploy para GitHub Pages
         id: deployment
