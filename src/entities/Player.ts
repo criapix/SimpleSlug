@@ -1,10 +1,8 @@
-import { Scene } from 'phaser';
 import { Bullet } from './Bullet';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private spaceKey: Phaser.Input.Keyboard.Key;
-    private isJumping: boolean = false;
     private moveSpeed: number = 200;
     private jumpForce: number = -400;
 
@@ -43,7 +41,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         // Pulo
         if (this.cursors.up?.isDown && (this.body.touching.down || this.body.blocked.down)) {
             this.setVelocityY(this.jumpForce);
-            this.isJumping = true;
         }
 
         // Tiro

@@ -26,7 +26,11 @@ export class Game extends Scene
         this.camera.setBackgroundColor(0x87CEEB); // Cor de céu
 
         // Adiciona o background com menor opacidade
-        this.background = this.add.image(512, 384, 'background');
+        const width = this.cameras.main.width;
+        const height = this.cameras.main.height;
+        
+        this.background = this.add.image(width * 0.5, height * 0.5, 'background');
+        this.background.setDisplaySize(width, height);
         this.background.setAlpha(0.3);
         
         // Cria o tilemap a partir do JSON carregado
@@ -72,7 +76,7 @@ export class Game extends Scene
         this.camera.startFollow(this.player);
         
         // Adiciona texto de instrução
-        this.msg_text = this.add.text(512, 100, 'Use as setas para mover e pular\nEspaço para atirar', {
+        this.msg_text = this.add.text(this.cameras.main.width * 0.5, this.cameras.main.height * 0.15, 'Use as setas para mover e pular\nEspaço para atirar', {
             fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
             stroke: '#000000', strokeThickness: 6,
             align: 'center'

@@ -13,11 +13,17 @@ export class MainMenu extends Scene
 
     create ()
     {
-        this.background = this.add.image(512, 384, 'background');
+        const width = this.cameras.main.width;
+        const height = this.cameras.main.height;
 
-        this.logo = this.add.image(512, 300, 'logo');
+        this.background = this.add.image(width * 0.5, height * 0.5, 'background');
+        this.background.setScale(Math.max(width / this.background.width, height / this.background.height));
 
-        this.title = this.add.text(512, 460, 'Main Menu', {
+        this.logo = this.add.image(width * 0.5, height * 0.4, 'logo');
+        const logoScale = (height * 0.4) / this.logo.height;
+        this.logo.setScale(logoScale);
+
+        this.title = this.add.text(width * 0.5, height * 0.6, 'Main Menu', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
