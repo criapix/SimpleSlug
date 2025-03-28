@@ -30,11 +30,16 @@ export class Game extends Scene
         const height = this.cameras.main.height;
         
         this.background = this.add.image(width * 0.5, height * 0.5, 'background');
-        this.background.setDisplaySize(width, height);
+        this.background.setScale(Math.max(width / this.background.width, height / this.background.height));
         this.background.setAlpha(0.3);
         
         // Cria o tilemap a partir do JSON carregado
         this.map = this.make.tilemap({ key: 'map' });
+        
+        // Calcula a escala para fazer o mapa ocupar toda a altura da tela
+        const mapHeight = this.map.heightInPixels;
+        const screenHeight = this.cameras.main.height;
+        const scale = screenHeight / mapHeight;
         
         // Adiciona o tileset ao mapa
         const tileset = this.map.addTilesetImage('tileset', 'tileset');
@@ -49,30 +54,34 @@ export class Game extends Scene
             throw new Error('Failed to create decoration layer');
         }
         this.decorationLayer = decorationLayer;
+        this.decorationLayer.setScale(scale);
 
         const platformLayer = this.map.createLayer('platforms', this.tileset, 0, 0);
         if (!platformLayer) {
             throw new Error('Failed to create platform layer');
         }
         this.platformLayer = platformLayer;
+        this.platformLayer.setScale(scale);
 
         const endLayer = this.map.createLayer('end', this.tileset, 0, 0);
         if (!endLayer) {
             throw new Error('Failed to create end layer');
         }
         this.endLayer = endLayer;
+        this.endLayer.setScale(scale);
         
         // Configura colisões para a camada de plataformas
         this.platformLayer.setCollisionByExclusion([-1, 0]);
 
-        // Cria o jogador na posição inicial
-        this.player = new Player(this, 100, 300);
+        // Cria o jogador na posição inicial e ajusta sua escala
+        this.player = new Player(this, 100 * scale, 300 * scale);
+        this.player.setScale(scale);
 
         // Adiciona colisão entre o jogador e as plataformas
         this.physics.add.collider(this.player, this.platformLayer);
         
         // Ajusta a câmera para seguir o jogador
-        this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+        this.camera.setBounds(0, 0, this.map.widthInPixels * scale, this.map.heightInPixels * scale);
         this.camera.startFollow(this.player);
         
         // Adiciona texto de instrução
