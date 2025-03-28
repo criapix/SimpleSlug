@@ -4,7 +4,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private spaceKey: Phaser.Input.Keyboard.Key;
     private moveSpeed: number = 200;
-    private jumpForce: number = -400;
+    private jumpForce: number = -700;
+    private canDoubleJump: boolean = true;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'player');
@@ -38,9 +39,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(0);
         }
 
+        // Resetar double jump quando tocar o chão
+        if (this.body.touching.down || this.body.blocked.down) {
+            this.canDoubleJump = true;
+        }
+
         // Pulo
-        if (this.cursors.up?.isDown && (this.body.touching.down || this.body.blocked.down)) {
-            this.setVelocityY(this.jumpForce);
+        if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+            if (this.body.touching.down || this.body.blocked.down) {
+                this.setVelocityY(this.jumpForce);
+            } else if (this.canDoubleJump) {
+                this.setVelocityY(this.jumpForce);
+                this.canDoubleJump = false;
+            }
         }
 
         // Tiro
